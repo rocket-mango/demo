@@ -36,8 +36,11 @@ public class DiseaseService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private String localLocation="C:\\Users\\user\\Downloads\\tmp";
-    //private String localLocation="/home";
+    @Value("${imgTmpsave.location}")
+    private String localLocation;
+
+    @Value("${mlserver.ip}")
+    private String mlServerIp;
 
     //S3에 이미지를 저장하는 메소드 입니다.
     public String saveToS3(MultipartFile mangoImage) {
@@ -69,7 +72,7 @@ public class DiseaseService {
     public List<String> diagnosis_mango(String s3Url) {
         System.out.println("DiseaseService.diagnosis_mango");
         List<String> resultList=new ArrayList<String>();
-        WebClient webClient= WebClient.create("http://localhost:8083");
+        WebClient webClient= WebClient.create(mlServerIp);
         resultList = webClient.post()
                 .uri("/mango")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -85,7 +88,7 @@ public class DiseaseService {
     //사탕수수 검사 서비스
     public List<String> diagnosis_sugarcane(String s3Url){
         List<String> resultList=new ArrayList<String>();
-        WebClient webClient=WebClient.create("http://localhost:8083");
+        WebClient webClient=WebClient.create("http://13.124.253.183:8083");
         resultList=webClient.post()
                 .uri("/sugarcane")
                 .contentType(MediaType.APPLICATION_JSON)
