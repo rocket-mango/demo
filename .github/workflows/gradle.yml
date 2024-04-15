@@ -49,7 +49,7 @@ jobs:
     - name: Docker Build
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/mango_project:latest .
+        docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/mango_project:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/mango_project:latest
 
     - name: Deploy 
