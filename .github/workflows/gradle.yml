@@ -59,7 +59,9 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
+          docker run -d -p 6379:6379 redis
           docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/mango_project:latest
+          
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #
