@@ -2,6 +2,7 @@ package com.demogroup.demoweb.service;
 
 import com.demogroup.demoweb.domain.User;
 import com.demogroup.demoweb.domain.dto.UserDTO;
+import com.demogroup.demoweb.domain.dto.UserModifyDTO;
 import com.demogroup.demoweb.exception.AppException;
 import com.demogroup.demoweb.exception.ErrorCode;
 import com.demogroup.demoweb.repository.UserRepository;
@@ -37,7 +38,12 @@ public class UserService {
             throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 아이디가 존재합니다.");
         }
         return response;
+    }
 
+    @Transactional(readOnly = true)
+    public User findById(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, "가입되지 않은 아이디입니다. 로그인을 진행합니다."));
     }
 
     @Transactional
@@ -47,7 +53,6 @@ public class UserService {
                 //Optional의 orElseThrow 함수는 람다식으로 작성해줘야 한다.
                 .orElseThrow(()->new AppException(ErrorCode.USERNAME_NOT_FOUND,"가입되지 않은 아이디입니다. 로그인을 진행합니다."));
 
-
         //가입된 사용자의 dto를 보내기
         return user;
     }
@@ -55,14 +60,15 @@ public class UserService {
     //회원정보를 수정하는 메서드이다.
     //update(or delete 쿼리도 마찬가지) 쿼리를 사용하기 때문에 @Transactional 을 사용해야 한다.
     @Transactional
-    public User modify(UserDTO dto, String username) {
+    public Long modify(UserModifyDTO dto, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, "가입되지 않은 아이디입니다. 로그인을 진행합니다."));
-        Long uid = user.getUid();
-        userRepository.modifyUserData(dto.getName(), dto.getUsername(), dto.getNickname(), dto.getEmail(), uid);
-        User response = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, "가입되지 않은 아이디입니다. 로그인을 진행합니다."));
-        return response;
+//        Long uid = user.getUid();
+//        userRepository.modifyUserData(dto.getName(), dto.getUsername(), dto.getNickname(), dto.getEmail(), uid);
+//        User response = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, "가입되지 않은 아이디입니다. 로그인을 진행합니다."));
+        user.update(dto);
+        return user.getUid();
     }
 
     @Transactional

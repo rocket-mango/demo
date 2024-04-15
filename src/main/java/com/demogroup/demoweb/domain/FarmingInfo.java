@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FarmingInfo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fid;
 
     private String topic;
@@ -23,10 +24,10 @@ public class FarmingInfo {
     @Column(name="title_2")
     private String title2;
 
-    @Column(name="content_1")
+    @Column(name="content_1", columnDefinition = "TEXT")
     private String content1;
 
-    @Column(name="content_2")
+    @Column(name="content_2", columnDefinition = "TEXT")
     private String content2;
 
     @Column(name = "image_url_1")

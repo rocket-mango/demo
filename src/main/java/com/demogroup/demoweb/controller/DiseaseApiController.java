@@ -66,6 +66,8 @@ public class DiseaseApiController {
     public ResponseEntity mangoDiagnosis(@RequestParam("mangoImage") MultipartFile mangoImage,
                                          @RequestParam("location") String location) throws Exception{
 
+        System.out.println("여기에 왔다..!");
+
         //사용자 찾기
         CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = principal.getUsername();
@@ -107,6 +109,28 @@ public class DiseaseApiController {
         List<Mango> mangoList=diseaseService.mangoList(username);
 
         String response = convertMangoListToJson(mangoList);
+        response="{ \"mangolist\" : "+response+"}";
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/{mid}")
+    public ResponseEntity getMangoResultById(@PathVariable("mid") Long mid){
+        Mango mango = diseaseService.findByMid(mid);
+        Disease disease = diseaseService.findByDiseaseName(mango.getDisease());
+        DiagnosisResponse obj=new DiagnosisResponse(mango,null,disease);
+        String response = convertEntityToJson(obj);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/test/{mid}")
+    public ResponseEntity getMangoById(@PathVariable("mid") String mid){
+        Long id = Long.parseLong(mid);
+        Mango mango = diseaseService.findByMid(id);
+        Disease disease = diseaseService.findByDiseaseName(mango.getDisease());
+        DiagnosisResponse obj=new DiagnosisResponse(mango,null,disease);
+        String response = convertEntityToJson(obj);
 
         return ResponseEntity.ok().body(response);
     }
@@ -119,6 +143,7 @@ public class DiseaseApiController {
         List<Mango> mangoList = diseaseService.mangoListByLocation(location,username);
 
         String response = convertMangoListToJson(mangoList);
+        response="{ \"mangolist\" : "+response+"}";
 
         return ResponseEntity.ok().body(response);
     }

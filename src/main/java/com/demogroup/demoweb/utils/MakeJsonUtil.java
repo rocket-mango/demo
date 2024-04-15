@@ -132,19 +132,6 @@ public class MakeJsonUtil{
         return jsonStr;
 
     }
-    public static JSONObject makeModifyJson(UserDTO dto) throws ParseException {
-        String jsonStr="{\"name\":\""+dto.getName()
-                +"\", \"nickname\":\""+dto.getNickname()
-                +"\", \"username\":\""+dto.getUsername()
-                +"\", \"password\":\""+dto.getPassword()
-                +"\",\"email\":\""+dto.getEmail()
-                +"\", \"role\":\""+dto.getRole()
-                +"\"}";
-        JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) parser.parse(jsonStr);
 
-        return jsonObject;
-
-    }
 
 }

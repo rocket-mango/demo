@@ -1,21 +1,20 @@
-package com.demogroup.demoweb.config.handler;
+package com.demogroup.demoweb.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().write("아이디 혹은 비밀번호 입력이 잘못되거나 세션이 종료되어 로그인에 실패하였습니다.");
-        System.out.println("여기 오긴 왔다..!");
-
-        return;
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().write("{\"message\": \"가입되지 않은 id 혹은 비밀번호입니다. 다시 로그인하십시오.\" }");
     }
 }

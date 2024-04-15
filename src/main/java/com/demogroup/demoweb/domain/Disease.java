@@ -14,14 +14,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Disease extends BaseTimeEntity{
+public class Disease{
     @Id
     private Long did;
     private String name;
 
     @Column(name = "name_en")
     private String ename;
+
+    @Column(columnDefinition = "TEXT")
     private String reason;
+
+    @Column(columnDefinition = "TEXT")
     private String symptom;
+
+    @Column(columnDefinition = "TEXT")
     private String handle;
 }

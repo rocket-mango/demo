@@ -1,6 +1,5 @@
 package com.demogroup.demoweb.security;
 
-import com.demogroup.demoweb.config.handler.CustomAuthenticationFailureHandler;
 import com.demogroup.demoweb.domain.CustomUserDetails;
 import com.demogroup.demoweb.exception.AppException;
 import com.demogroup.demoweb.exception.ErrorCode;
@@ -31,9 +30,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JWTUtils jwtUtils;
-    private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
-    public LoginFilter(AuthenticationManager authenticationManager,AuthenticationFailureHandler authenticationFailureHandler, JWTUtils jwtUtils) {
+    public LoginFilter(AuthenticationManager authenticationManager,CustomAuthenticationFailureHandler authenticationFailureHandler, JWTUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.authenticationFailureHandler = authenticationFailureHandler;
@@ -75,10 +74,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//        }catch (AuthenticationException ae){
-//            unsuccessfulAuthentication(request,response,ae);
-//            throw new RuntimeException(ae);
-//
+
         }catch (AuthenticationException e) {
             unsuccessfulAuthentication(request, response, e);
             return null;
@@ -99,6 +95,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //1초*60(분)*60(1시간)=>1시간 기한의 JWT이다.
         String token = jwtUtils.createToken(customUserDetails,  60 * 60 * 1000L);
+        System.out.println(token);
         response.setStatus(HttpServletResponse.SC_OK);
         response.addHeader("Authorization","Bearer "+token);
         System.out.println("이 글자가 보이면 response jwt 성공");

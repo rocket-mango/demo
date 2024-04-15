@@ -1,6 +1,7 @@
 package com.demogroup.demoweb.utils;
 
 
+import com.demogroup.demoweb.domain.CustomOAuth2User;
 import com.demogroup.demoweb.domain.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -80,6 +81,24 @@ public class JWTUtils {
         claims.put("name",dto.getName());
         claims.put("username",dto.getUsername());
         claims.put("nickname",dto.getNickname());
+        claims.put("email",dto.getEmail());
+        claims.put("role",role);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+expiredMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createToken(CustomOAuth2User dto, Long expiredMs){
+        String role = dto.getAuthorities().iterator().next()
+                .getAuthority();
+
+        Claims claims= Jwts.claims();
+        claims.put("name",dto.getName());
+        claims.put("username",dto.getUsername());
         claims.put("email",dto.getEmail());
         claims.put("role",role);
 

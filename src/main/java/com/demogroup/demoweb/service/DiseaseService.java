@@ -24,10 +24,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +36,8 @@ public class DiseaseService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private String localLocation="C:\\Users\\yujin\\Downloads\\temp";
+    private String localLocation="C:\\Users\\user\\Downloads\\tmp";
+    //private String localLocation="/home";
 
     //S3에 이미지를 저장하는 메소드 입니다.
     public String saveToS3(MultipartFile mangoImage) {
@@ -69,11 +67,13 @@ public class DiseaseService {
 
     //망고 검사 서비스
     public List<String> diagnosis_mango(String s3Url) {
+        System.out.println("DiseaseService.diagnosis_mango");
         List<String> resultList=new ArrayList<String>();
         WebClient webClient= WebClient.create("http://localhost:8083");
         resultList = webClient.post()
                 .uri("/mango")
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
                 .retrieve()
                 .bodyToMono(List.class)
@@ -89,6 +89,7 @@ public class DiseaseService {
         resultList=webClient.post()
                 .uri("/sugarcane")
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
                 .retrieve()
                 .bodyToMono(List.class)
@@ -160,6 +161,20 @@ public class DiseaseService {
         mangoList = mangoRepository.findMangoByUidAndLocation(uid, location);
 
         return mangoList;
+    }
+
+    @Transactional(readOnly = true)
+    public Mango findByMid(Long mid){
+        Mango mango = mangoRepository.findById(mid)
+                .orElseThrow(()->new AppException(ErrorCode.ENTITY_NOT_FOUND,"망고를 찾지 못했습니다. id에 오류가 있을 가능성이 있습니다."));
+        return mango;
+    }
+
+    @Transactional(readOnly = true)
+    public Disease findByDiseaseName(String name){
+        Disease disease = diseaseRepository.findByEname(name)
+                .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_FOUND, "질병을 찾지 못했습니다. id에 오류가 있을 가능성이 있습니다."));
+        return disease;
     }
 
     public Disease findDisease(String diseaseName) {

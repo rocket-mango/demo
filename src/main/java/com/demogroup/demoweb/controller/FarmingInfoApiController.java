@@ -37,6 +37,7 @@ public class FarmingInfoApiController {
         //json 변환
         try {
             response = objectMapper.writeValueAsString(list);
+            response="{ \"categories\" : "+response+"}";
         }catch (JsonProcessingException e){
             e.printStackTrace();
             return ResponseEntity.status(404).body(e);
@@ -53,6 +54,7 @@ public class FarmingInfoApiController {
         //json 변환
         try {
             response = objectMapper.writeValueAsString(byCategoryList);
+            response="{ \"tiplist\" : "+response+"}";
         }catch (JsonProcessingException e){
             e.printStackTrace();
             return ResponseEntity.status(404).body(e);

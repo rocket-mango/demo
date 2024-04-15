@@ -1,11 +1,14 @@
 package com.demogroup.demoweb.domain;
 
 import com.demogroup.demoweb.domain.dto.MangoDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @AllArgsConstructor
@@ -18,8 +21,10 @@ public class Mango extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mid;
 
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="uid")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(columnDefinition = "tinyint(1)")

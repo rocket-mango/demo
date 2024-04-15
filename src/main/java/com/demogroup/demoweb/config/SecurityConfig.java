@@ -1,6 +1,5 @@
 package com.demogroup.demoweb.config;
 
-import com.demogroup.demoweb.config.handler.CustomAuthenticationFailureHandler;
 import com.demogroup.demoweb.domain.CustomOAuth2User;
 import com.demogroup.demoweb.domain.CustomUserDetails;
 import com.demogroup.demoweb.domain.Role;
@@ -11,6 +10,8 @@ import com.demogroup.demoweb.repository.UserRepository;
 import com.demogroup.demoweb.security.*;
 import com.demogroup.demoweb.service.CustomOAuth2UserService;
 import com.demogroup.demoweb.utils.JWTUtils;
+import com.fasterxml.jackson.core.io.CharTypes;
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -71,12 +73,24 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
 
 
+
     /*로그인 인증 시 인증을 실질적으로 담당하는 인터페이스인 AuthenticationManager를 생성하는 Bean이다.
     AuthenticationConfiguration을 사용하여 AuthenticationManager를 얻는데, AuthenticationConfiguration은 스프링에서 제공하는 객체를 생성자주입받으면 된다.
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    //swagger 필터 안타게
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> {
+          web.ignoring()
+                  .requestMatchers("/swagger-ui/**",
+                          "/swagger-resources/**",
+                          "/v3/api-docs/**");
+        };
     }
 
     /*
@@ -100,7 +114,8 @@ public class SecurityConfig {
                         .disable()
                 ) // httpBasic 로그인 방식도 사용하지 않는다.
                 .authorizeHttpRequests(request->request
-                        .requestMatchers("/api/user/joinProc", "/api/user/login","/test","/test2","/api/disease/**","/api/farmingInfo/**").permitAll()
+                        .requestMatchers("/api/user/joinProc", "/api/user/login","/oauth2/**","/test","/test2").permitAll()
+                        //.requestMatchers("/swagger-ui/**","/swagger-resources/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/**").hasRole("USER")
                         .anyRequest().authenticated()
                 ) /* 해당 사용자에 따라 제공하는 자원에 차이를 두는 '인가'를 설정한다.
@@ -110,8 +125,11 @@ public class SecurityConfig {
                 - .hasRole() : Security context에 등록되어 있는 Authentication에서 ROLE 값을 확인한다. 스프링 시큐리티에서는 ROLE을 "ROLE_"이라는 접두사를 붙여
                 관리하는데, hasRole 함수 사용 시에는 "USER"와 같은 권한 명만 붙인다. ROLE_USER 인 권한을 가진 접근자만이 "/admin" 자원을 이용할 수 있다는 말이다.
                 */
+                .exceptionHandling((ex)->ex
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint()))
                 .addFilterBefore(new JWTFilter(userRepository,jwtUtils,redisTemplate), LoginFilter.class
-                ) /* LoginFilter 전에 유효한 jwt를 http request header의 "Authorization"에 보냈는지 확인하고 매 HTTP 요청마다 (일시적으로)
+                )
+                .addFilterBefore(new JWTExceptionFilter(),JWTFilter.class)/* LoginFilter 전에 유효한 jwt를 http request header의 "Authorization"에 보냈는지 확인하고 매 HTTP 요청마다 (일시적으로)
                 Security context에 authentication을 만들어 넣어주는 필터를 추가했다.
                 나는 session 방식이 아니라 jwt 방식을 사용하기 때문에, stateless http로 요청하는 사용자가 전에 인증된 사용자인지 알 수 없다.
                 JWTFilter를 통해 매 요청마다 진행되는 일회성의 authentication을 통해 사용자 전용 마이페이지 등을 보여주는 방식을 취한다.
@@ -155,7 +173,6 @@ public class SecurityConfig {
                         .logoutSuccessHandler(new LogoutSuccessHandler() {
                             @Override
                             public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//                                response.sendRedirect("/user/login");
                                 System.out.println("SecurityConfig.onLogoutSuccess");
                                 response.setStatus(HttpServletResponse.SC_OK);
                             }
@@ -189,7 +206,6 @@ public class SecurityConfig {
                 않는 방식에서 이 Policy를 적용한다.
                 */
                 .oauth2Login((oauth2)->oauth2
-                        .loginPage("/user/login")
                         .userInfoEndpoint((userInfoEndpointConfig)->userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(oauthSuccessHandler())
@@ -248,7 +264,6 @@ public class SecurityConfig {
 
         // 특정 IP 주소들을 추가합니다.
         config.addAllowedOrigin("*");
-        //config.addAllowedOrigin("http://");
 
         // 다른 CORS 설정 (옵션)
         config.addAllowedMethod("*");
@@ -268,45 +283,17 @@ public class SecurityConfig {
     * JWT를 생성하여 response에 보내는 역할까지 수행한다.
     * */
     @Bean
-    public AuthenticationSuccessHandler oauthSuccessHandler(){
-        return (request, response, authentication) -> {
-            //OAuth2AthenticationFilter에서 저장해줬던 세션을 삭제한다
-            HttpSession session = request.getSession(false);
-            SecurityContextHolder.clearContext();
-            if(session!=null){
-                session.invalidate();
-            }
-            System.out.println(SecurityContextHolder.getContext());
-
-            //CustomOAuth2User 가져오기
-            CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-
-            String email = oAuth2User.getEmail();
-            User user=userRepository.findByEmail(email)
-                    .orElseThrow();
-            System.out.println("====================================");
-            System.out.println(user.getUsername());
-            CustomUserDetails dto = new CustomUserDetails(user);
-            String oAuth2Token = jwtUtils.createToken(dto, 60 * 60 * 1000L);
-            System.out.println(oAuth2Token);
-            response.addHeader("Authorization","Bearer "+oAuth2Token);
-            response.getWriter().write("로그인에 성공하였습니다");
-
-        };
+    public CustomOAuth2LoginSuccessHandler oauthSuccessHandler(){
+        return new CustomOAuth2LoginSuccessHandler(jwtUtils);
     }
 
     @Bean
-    public AuthenticationFailureHandler oauthFailureHandler(){
-        return (request, response, authentication) -> {
-            //OAuth2AthenticationFilter에서 저장해줬던 세션을 삭제한다
-            HttpSession session = request.getSession(false);
-            SecurityContextHolder.clearContext();
-            if(session!=null){
-                session.invalidate();
-            }
+    public CustomOAuth2LoginFailureHandler oauthFailureHandler(){
+        return new CustomOAuth2LoginFailureHandler();
+    }
 
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.getWriter().write("아이디 혹은 비밀번호 입력이 잘못되거나 세션이 종료되어 로그인에 실패하였습니다.");
-        };
+    @Bean
+    public JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint(){
+        return new JWTAuthenticationEntryPoint();
     }
 }
