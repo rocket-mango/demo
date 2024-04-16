@@ -63,7 +63,7 @@ public class DiseaseApiController {
     //망고 질병 검색을 진행하는 컨트롤러
     //리턴값 : top 3 결과와 망고 결과 정보를 리턴한다.
     @PostMapping(value = "/diagnosis", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity mangoDiagnosis(@RequestParam(value = "mangoImage", required = false) MultipartFile mangoImage,
+    public ResponseEntity mangoDiagnosis(@RequestParam(value = "mangoImage") MultipartFile mangoImage,
                                          @RequestParam(value = "location", required = false) String location) throws Exception{
 
         System.out.println("여기에 왔다..!");
