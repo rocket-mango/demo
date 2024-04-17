@@ -62,7 +62,6 @@ jobs:
 
           docker stop redis-container
           docker stop spring-boot-container
-
           docker rm $(docker ps -a --filter "status=exited" -q)
 
           # Docker 네트워크 생성
