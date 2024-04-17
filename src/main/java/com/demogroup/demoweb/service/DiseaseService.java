@@ -89,20 +89,20 @@ public class DiseaseService {
         return resultList;
     }
 
-    //사탕수수 검사 서비스
-    public List<String> diagnosis_sugarcane(String s3Url){
-        List<String> resultList=new ArrayList<String>();
-        WebClient webClient=WebClient.create("http://13.124.253.183:8083");
-        resultList=webClient.post()
-                .uri("/sugarcane")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
-                .retrieve()
-                .bodyToMono(List.class)
-                .block();
-        return resultList;
-    }
+//    //사탕수수 검사 서비스
+//    public List<String> diagnosis_sugarcane(String s3Url){
+//        List<String> resultList=new ArrayList<String>();
+//        WebClient webClient=WebClient.create(mlServerIp);
+//        resultList=webClient.post()
+//                .uri("/sugarcane")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
+//                .retrieve()
+//                .bodyToMono(List.class)
+//                .block();
+//        return resultList;
+//    }
 
     public Mango saveMango(MangoDTO dto) {
         Mango mango = Mango.toEntity(dto);
