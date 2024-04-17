@@ -74,7 +74,7 @@ jobs:
           # docker run -d --network my-network --name spring-boot-container -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/mango_project:latest
 
           docker run -d -p 8080:8080 --name mango-server ${{ secrets.DOCKER_USERNAME }}/mango_project:latest
-          docker run -d -p 6379:6379 --name redis-container --net container:mango-server redis
+          docker run -d -p 6379:6379 --name redis-container --network container:mango-server redis
           
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
