@@ -60,7 +60,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
 
-          #docker stop redis-container
+          docker stop redis-container
           #docker stop spring-boot-container
           docker rm $(docker ps -a --filter "status=exited" -q)
 
