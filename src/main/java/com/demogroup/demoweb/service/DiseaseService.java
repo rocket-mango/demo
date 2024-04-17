@@ -75,7 +75,7 @@ public class DiseaseService {
     public List<String> diagnosis_mango(String s3Url) {
         System.out.println("DiseaseService.diagnosis_mango");
         List<String> resultList=new ArrayList<String>();
-        WebClient webClient= WebClient.create(mlServerIp);
+        WebClient webClient= WebClient.create("http://3.39.21.77:8083");
         resultList = webClient.post()
                 .uri("/mango")
                 .contentType(MediaType.APPLICATION_JSON)
