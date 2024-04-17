@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 
-import static io.lettuce.core.XReadArgs.Builder.block;
 
 @Service
 @RequiredArgsConstructor
@@ -83,26 +82,25 @@ public class DiseaseService {
                 .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
                 .retrieve()
                 .bodyToMono(List.class)
-                .timeout(Duration.ofSeconds(30))
                 .block();
 
         return resultList;
     }
 
-//    //사탕수수 검사 서비스
-//    public List<String> diagnosis_sugarcane(String s3Url){
-//        List<String> resultList=new ArrayList<String>();
-//        WebClient webClient=WebClient.create(mlServerIp);
-//        resultList=webClient.post()
-//                .uri("/sugarcane")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
-//                .retrieve()
-//                .bodyToMono(List.class)
-//                .block();
-//        return resultList;
-//    }
+    //사탕수수 검사 서비스
+    public List<String> diagnosis_sugarcane(String s3Url){
+        List<String> resultList=new ArrayList<String>();
+        WebClient webClient=WebClient.create(mlServerIp);
+        resultList=webClient.post()
+                .uri("/sugarcane")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
+                .retrieve()
+                .bodyToMono(List.class)
+                .block();
+        return resultList;
+    }
 
     public Mango saveMango(MangoDTO dto) {
         Mango mango = Mango.toEntity(dto);
