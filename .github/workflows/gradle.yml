@@ -60,12 +60,12 @@ jobs:
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
 
-          #docker stop redis-container
-          #docker stop spring-boot-container
-          #docker rm $(docker ps -a --filter "status=exited" -q)
+          docker stop redis-container
+          docker stop spring-boot-container
+          docker rm $(docker ps -a --filter "status=exited" -q)
 
           # # Docker 네트워크 생성
-          docker network create my-network
+          # docker network create my-network
     
           # Redis 컨테이너 실행 및 my-network에 연결
           docker run -d --network my-network --name redis-container -p 6379:6379 redis
