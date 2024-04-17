@@ -24,7 +24,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.*;
+
+import static io.lettuce.core.XReadArgs.Builder.block;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +83,7 @@ public class DiseaseService {
                 .bodyValue("{\"s3url\": \"" + s3Url + "\"}")
                 .retrieve()
                 .bodyToMono(List.class)
+                .timeout(Duration.ofSeconds(30))
                 .block();
 
         return resultList;
