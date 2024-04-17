@@ -68,10 +68,10 @@ jobs:
           # docker network create my-network1
     
           # Redis 컨테이너 실행 및 my-network에 연결
-          docker run -d --network my-network --name redis-container -p 6379:6379 redis
+          docker run -d --network my-network --name redis-container -p 6379:80 redis
     
           # Spring Boot 컨테이너 실행 및 my-network에 연결
-          docker run -d --network my-network --name spring-boot-container -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/mango_project:latest
+          docker run -d --network my-network --name spring-boot-container -p 8080:80 ${{ secrets.DOCKER_USERNAME }}/mango_project:latest
 
                   
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
