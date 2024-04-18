@@ -44,6 +44,9 @@ public class DiseaseService {
     @Value("${mlserver.ip}")
     private String mlServerIp;
 
+    @Value("${test}")
+    private String test;
+
     //S3에 이미지를 저장하는 메소드 입니다.
     public String saveToS3(MultipartFile mangoImage) {
         //mangoImage를 일시적으로 로컬에 저장
@@ -72,6 +75,7 @@ public class DiseaseService {
 
     //망고 검사 서비스
     public List<String> diagnosis_mango(String s3Url) {
+        System.out.println(test);
         System.out.println("DiseaseService.diagnosis_mango");
         List<String> resultList=new ArrayList<String>();
         WebClient webClient= WebClient.create(mlServerIp);
