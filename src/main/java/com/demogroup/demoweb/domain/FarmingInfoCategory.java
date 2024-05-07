@@ -20,6 +20,4 @@ public class FarmingInfoCategory {
     @Column(name = "category_name")
     private String categoryName;
 
-//    @OneToMany(mappedBy = "category")
-//    private List<FarmingInfo> infoList;
 }
