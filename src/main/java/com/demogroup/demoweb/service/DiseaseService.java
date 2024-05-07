@@ -44,8 +44,6 @@ public class DiseaseService {
     @Value("${mlserver.ip}")
     private String mlServerIp;
 
-    @Value("${test}")
-    private String test;
 
     //S3에 이미지를 저장하는 메소드 입니다.
     public String saveToS3(MultipartFile mangoImage) {
