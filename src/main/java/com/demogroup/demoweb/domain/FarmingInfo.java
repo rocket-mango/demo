@@ -18,6 +18,9 @@ public class FarmingInfo {
 
     private String topic;
 
+    @Column(length = 255)
+    private String summary;
+
     @Column(name = "title_1")
     private String title1;
 
