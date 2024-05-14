@@ -21,6 +21,9 @@ public class FarmingInfo {
     @Column(length = 255)
     private String summary;
 
+    @Column(name = "ref_image_url")
+    private String refImageUrl;
+
     @Column(name = "title_1")
     private String title1;
 

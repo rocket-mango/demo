@@ -22,6 +22,4 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().write("{\"message\":\"JWT 인증에 오류가 있습니다. 다시 로그인해주십시오. \" }");
     }
-
-
 }

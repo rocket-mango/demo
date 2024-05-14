@@ -3,6 +3,9 @@ package com.demogroup.demoweb.controller;
 import com.demogroup.demoweb.domain.FarmingInfo;
 import com.demogroup.demoweb.domain.FarmingInfoCategory;
 import com.demogroup.demoweb.domain.User;
+import com.demogroup.demoweb.domain.dto.FarmingInfoSimplerResponseDTO;
+import com.demogroup.demoweb.exception.AppException;
+import com.demogroup.demoweb.exception.ErrorCode;
 import com.demogroup.demoweb.repository.FarmingInfoCategoryRepository;
 import com.demogroup.demoweb.repository.FarmingInfoRepository;
 import com.demogroup.demoweb.repository.UserRepository;
@@ -46,14 +49,13 @@ public class FarmingInfoApiController {
         return ResponseEntity.ok().body(response);
     }
 
-    //카테고리별 리스트
-    @GetMapping("/list/{category}")
-    public ResponseEntity findByCategory(@PathVariable("category") Long fcid){
-        List<FarmingInfo> byCategoryList = farmingInfoRepository.findByCategory_Fcid(fcid);
+
+    @GetMapping("/list/all")
+    public ResponseEntity findAllTips(){
+        List<FarmingInfo> all = farmingInfoRepository.findAll();
         String response;
-        //json 변환
         try {
-            response = objectMapper.writeValueAsString(byCategoryList);
+            response = objectMapper.writeValueAsString(all);
             response="{ \"tiplist\" : "+response+"}";
         }catch (JsonProcessingException e){
             e.printStackTrace();
@@ -61,7 +63,36 @@ public class FarmingInfoApiController {
         }
 
         return ResponseEntity.ok().body(response);
+
     }
+
+    //카테고리별 리스트
+//    @GetMapping("/list/{category}")
+//    public ResponseEntity findByCategory(@PathVariable("category") Long fcid){
+//        List<FarmingInfo> byCategoryList = farmingInfoRepository.findByCategory_Fcid(fcid);
+//        String response;
+//        //json 변환
+//        try {
+//            response = objectMapper.writeValueAsString(byCategoryList);
+//            response="{ \"tiplist\" : "+response+"}";
+//        }catch (JsonProcessingException e){
+//            e.printStackTrace();
+//            return ResponseEntity.status(404).body(e);
+//        }
+//
+//        return ResponseEntity.ok().body(response);
+//    }
+
+    @GetMapping("/list/{categoryId}")
+    public ResponseEntity farmingInfoListByCategory(@PathVariable("categoryId")Long categoryId){
+        List<FarmingInfo> list = farmingInfoRepository.findByCategory_Fcid(categoryId);
+        FarmingInfoCategory farmingInfoCategory = farmingInfoCategoryRepository.findById(categoryId)
+                .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_FOUND, ""));
+
+        FarmingInfoSimplerResponseDTO response = FarmingInfoSimplerResponseDTO.of(farmingInfoCategory.getCategoryName(), list);
+        return ResponseEntity.ok().body(response);
+    }
+
 
     //해당 FarmingInfo
     @GetMapping("/{fid}")
@@ -80,6 +111,8 @@ public class FarmingInfoApiController {
         return ResponseEntity.ok().body(response);
 
     }
+
+
 
 
 }

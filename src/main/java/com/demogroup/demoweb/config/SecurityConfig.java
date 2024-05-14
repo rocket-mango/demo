@@ -87,7 +87,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return web -> {
           web.ignoring()
-                  .requestMatchers("/swagger-ui/**",
+                  .requestMatchers("/swagger-ui/**S",
                           "/swagger-resources/**",
                           "/v3/api-docs/**");
         };
@@ -105,7 +105,7 @@ public class SecurityConfig {
                 .csrf(csrf->csrf
                         .disable()
                 ) // JWT를 사용하여 인증하기 때문에 csrf 보호를 해제한다.
-//                .formLogin((form)->form
+//                .formLogin((formdi)->form
 //                        .disable()
 //                )
                 .cors((auth)->auth
@@ -118,7 +118,8 @@ public class SecurityConfig {
                         //.requestMatchers("/swagger-ui/**","/swagger-resources/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/**").hasRole("USER")
                         .anyRequest().authenticated()
-                ) /* 해당 사용자에 따라 제공하는 자원에 차이를 두는 '인가'를 설정한다.
+                )
+                /* 해당 사용자에 따라 제공하는 자원에 차이를 두는 '인가'를 설정한다.
                  AuthorizationFilter는 security filter 중 거의 마지막에 위치하는데, 인증을 받은 사용자들을 -> 인가하는, 순서를 지키기 위해서이다.
                  SecurityContext에서 사용자가 가진 Role을 기준으로 여러 권한을 결정한다.
                 - permitAll(): 누구나 해당 자원에 접근할 수 있는(요청할 수 있는) permitAll()가 있다. 여기에는 로그인 관련 urn이나 인증이 필요하지 않은 모든 접근가능한 자원을 명시한다.

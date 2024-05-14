@@ -49,7 +49,6 @@ public class JWTFilter extends OncePerRequestFilter {
             if(token0==null || !token0.startsWith("Bearer ")){
                 System.out.println("토큰이 없습니다. 로그인을 진행합니다");
                 throw new JWTAuthenticationException("토큰이 없습니다. 로그인을 진행합니다");
-
             }
 
             //순수 토큰 획득
@@ -59,7 +58,6 @@ public class JWTFilter extends OncePerRequestFilter {
             if(jwtUtils.isExpired(token)){
                 System.out.println("토큰 기간이 만료되었습니다. 로그인을 진행합니다");
                 throw new JWTAuthenticationException("토큰 기간이 만료되었습니다. 로그인을 진행합니다");
-
             }
 
             //redis blacklist에 있는지 확인
@@ -93,7 +91,6 @@ public class JWTFilter extends OncePerRequestFilter {
         }catch (JWTAuthenticationException e){
             log.error("JWT 토큰이 존재하지 않거나 정상적이지 않습니다.");
         }
-
 
         System.out.println("그대로 진행됨");
         //******스프링 시큐리티 context에 등록하기******

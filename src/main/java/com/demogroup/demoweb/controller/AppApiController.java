@@ -1,12 +1,12 @@
 package com.demogroup.demoweb.controller;
 
-import com.demogroup.demoweb.domain.CustomUserDetails;
-import com.demogroup.demoweb.domain.Mango;
-import com.demogroup.demoweb.domain.User;
-import com.demogroup.demoweb.domain.Weather;
+import com.demogroup.demoweb.domain.*;
+import com.demogroup.demoweb.domain.dto.FarmingInfoDTO;
+import com.demogroup.demoweb.domain.dto.HomePageResponse;
 import com.demogroup.demoweb.repository.UserRepository;
 import com.demogroup.demoweb.service.AppService;
 import com.demogroup.demoweb.service.DiseaseService;
+import com.demogroup.demoweb.service.FarmingInfoService;
 import com.demogroup.demoweb.service.UserService;
 import com.demogroup.demoweb.utils.MakeJsonUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,9 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +35,7 @@ public class AppApiController {
 
     private final DiseaseService diseaseService;
     private final UserRepository userRepository;
+    private final FarmingInfoService farmingInfoService;
 
     private final AppService appService;
 
@@ -69,8 +69,9 @@ public class AppApiController {
 
             //사용자의 마이망고리스트
             List<Mango> mangoList = diseaseService.mangoList(username);
+            List<FarmingInfo> list = farmingInfoService.findForHomeInfos();
 
-            HomePageResponse obj = new HomePageResponse(mangoList,user,weather);
+            HomePageResponse obj = HomePageResponse.of(mangoList,user,weather,list);
 
             String response = convertEntityToJson(obj);
 
@@ -83,21 +84,7 @@ public class AppApiController {
 
 
     //사용자의 마이망고리스트
-    @Getter
-    private class HomePageResponse{
 
-        private List<Mango> mangoList;
-        private User user;
-        private Weather weather;
-
-        // 생성자에서 각 필드에 대한 초기화
-        HomePageResponse(List<Mango> mangoList, User user, Weather weather) {
-            this.mangoList = new ArrayList<>(mangoList);
-            this.user = user;
-            this.weather = weather;
-        }
-
-    }
 
     abstract class passwordIgnore {
         @JsonIgnore
