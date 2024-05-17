@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/disease")
@@ -74,6 +75,7 @@ public class DiseaseApiController {
         //이미지를 s3에 저장하고, 망고 검사를 진행하는 페이지
         String s3Url = diseaseService.saveToS3(mangoImage);
         List<String> resultList = diseaseService.diagnosis_mango(s3Url);
+
         //망고 결과 저장하기
         boolean is_disease=true;
         String diseaseName="";
@@ -106,7 +108,11 @@ public class DiseaseApiController {
         //해당 사용자의 망고 리스트 반환
         List<Mango> mangoList=diseaseService.mangoList(username);
 
-        String response = convertMangoListToJson(mangoList);
+        List<Mango> sortedMangoList = mangoList.stream()
+                .sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
+                .collect(Collectors.toList());
+
+        String response = convertMangoListToJson(sortedMangoList);
         response="{ \"mangolist\" : "+response+"}";
 
         return ResponseEntity.ok().body(response);

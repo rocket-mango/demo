@@ -71,8 +71,7 @@ public class DiseaseService {
 
     //망고 검사 서비스
     public List<String> diagnosis_mango(String s3Url) {
-        System.out.println("이 글자가 보이시나용??");
-        System.out.println("DiseaseService.diagnosis_mango");
+
         List<String> resultList=new ArrayList<String>();
         WebClient webClient= WebClient.create(mlServerIp);
         resultList = webClient.post()
@@ -83,9 +82,9 @@ public class DiseaseService {
                 .retrieve()
                 .bodyToMono(List.class)
                 .block();
-
         return resultList;
     }
+
 
     //사탕수수 검사 서비스
     public List<String> diagnosis_sugarcane(String s3Url){
