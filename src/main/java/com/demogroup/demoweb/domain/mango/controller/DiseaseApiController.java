@@ -141,7 +141,7 @@ public class DiseaseApiController {
 
     //프런트엔드에서 location을 보내면 location에 맞는 리스트만 뽑아 보내주는 컨트롤러
     @GetMapping("/lists/byLocation")
-    public ResponseEntity listByLocation(String location){
+    public ResponseEntity listByLocation(@RequestParam("location") String location){
         CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username=principal.getUsername();
         List<Mango> mangoList = diseaseService.mangoListByLocation(location,username);
