@@ -1,16 +1,14 @@
 package com.demogroup.demoweb.controller;
 
-import com.demogroup.demoweb.domain.CustomUserDetails;
-import com.demogroup.demoweb.domain.Mango;
-import com.demogroup.demoweb.domain.User;
-import com.demogroup.demoweb.repository.MangoRepository;
-import com.demogroup.demoweb.service.DiseaseService;
-import com.demogroup.demoweb.service.UserService;
+import com.demogroup.demoweb.domain.user.controller.UserApiController;
+import com.demogroup.demoweb.global.auth.domain.CustomUserDetails;
+import com.demogroup.demoweb.domain.mango.domain.Mango;
+import com.demogroup.demoweb.domain.user.domain.User;
+import com.demogroup.demoweb.domain.mango.service.DiseaseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
