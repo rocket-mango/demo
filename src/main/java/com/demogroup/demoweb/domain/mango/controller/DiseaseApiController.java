@@ -146,7 +146,12 @@ public class DiseaseApiController {
         String username=principal.getUsername();
         List<Mango> mangoList = diseaseService.mangoListByLocation(location,username);
 
-        String response = convertMangoListToJson(mangoList);
+        List<Mango> sortedMangoList = mangoList.stream()
+                .sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
+                .collect(Collectors.toList());
+
+        String response = convertMangoListToJson(sortedMangoList);
+
         response="{ \"mangolist\" : "+response+"}";
 
         return ResponseEntity.ok().body(response);
