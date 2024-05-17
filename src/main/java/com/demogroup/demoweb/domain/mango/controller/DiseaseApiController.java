@@ -1,6 +1,7 @@
 package com.demogroup.demoweb.domain.mango.controller;
 
 import com.demogroup.demoweb.domain.user.controller.UserApiController;
+import com.demogroup.demoweb.global.auth.annotation.AuthUser;
 import com.demogroup.demoweb.global.auth.domain.CustomUserDetails;
 import com.demogroup.demoweb.domain.mango.domain.Disease;
 import com.demogroup.demoweb.domain.mango.domain.Mango;
@@ -62,15 +63,14 @@ public class DiseaseApiController {
     //망고 질병 검색을 진행하는 컨트롤러
     //리턴값 : top 3 결과와 망고 결과 정보를 리턴한다.
     @PostMapping(value = "/diagnosis", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity mangoDiagnosis(@RequestPart(value = "mangoImage") MultipartFile mangoImage,
+    public ResponseEntity mangoDiagnosis(@AuthUser User user,
+                                         @RequestPart(value = "mangoImage") MultipartFile mangoImage,
                                          @RequestPart(value = "location") String location) throws Exception{
-
-        System.out.println("여기에 왔다..!");
-
         //사용자 찾기
-        CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = principal.getUsername();
-        User user = userService.findByUsername(username);
+        String username = user.getUsername();
+        User user_ = userService.findByUsername(username);
+
+        System.out.println(mangoImage.getName());
 
         //이미지를 s3에 저장하고, 망고 검사를 진행하는 페이지
         String s3Url = diseaseService.saveToS3(mangoImage);
@@ -88,7 +88,7 @@ public class DiseaseApiController {
             diseaseName=resultList.get(0);
             disease=diseaseService.findDisease(diseaseName);
         }
-        MangoDTO dto =new MangoDTO(user,is_disease,diseaseName, s3Url, location);
+        MangoDTO dto =new MangoDTO(user_,is_disease,diseaseName, s3Url, location);
         Mango mango = diseaseService.saveMango(dto);
 
         DiagnosisResponse obj = new DiagnosisResponse(mango, resultList, disease);
@@ -100,10 +100,9 @@ public class DiseaseApiController {
 
     //망고 리스트 가져오기
     @GetMapping("/my-mango-list")
-    public ResponseEntity myMangoList(){
+    public ResponseEntity myMangoList(@AuthUser User user){
         //사용자 찾기
-        CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = principal.getUsername();
+        String username = user.getUsername();
 
         //해당 사용자의 망고 리스트 반환
         List<Mango> mangoList=diseaseService.mangoList(username);
@@ -141,9 +140,9 @@ public class DiseaseApiController {
 
     //프런트엔드에서 location을 보내면 location에 맞는 리스트만 뽑아 보내주는 컨트롤러
     @GetMapping("/lists/byLocation")
-    public ResponseEntity listByLocation(@RequestParam("location") String location){
-        CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username=principal.getUsername();
+    public ResponseEntity listByLocation(@AuthUser User user,
+            @RequestParam("location") String location){
+        String username=user.getUsername();
         List<Mango> mangoList = diseaseService.mangoListByLocation(location,username);
 
         List<Mango> sortedMangoList = mangoList.stream()
@@ -160,8 +159,6 @@ public class DiseaseApiController {
     //망고 리스트에서 해당 망고 객체를 삭제한다.
     @GetMapping("/lists/delete/{mid}")
     public ResponseEntity listDelete(@PathVariable("mid") Long mid){
-        //사용자 찾기
-        CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try{
             diseaseService.deleteMango(mid);
