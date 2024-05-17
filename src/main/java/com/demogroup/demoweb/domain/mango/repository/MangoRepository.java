@@ -13,7 +13,7 @@ public interface MangoRepository extends JpaRepository<Mango, Long> {
     List<Mango> findAllByUser_Uid(Long uid);
 
     @Modifying
-    @Query(value = "select * from mango where uid=?1 and location=?2",
+    @Query(value = "select * from Mango where uid=?1 and location=?2",
             nativeQuery = true)
     List<Mango> findMangoByUidAndLocation(Long uid, String location);
 }
