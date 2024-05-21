@@ -113,9 +113,8 @@ public class DiseaseService {
                 .orElseThrow(()->(new AppException(ErrorCode.USERNAME_NOT_FOUND,"확인되지 않은 사용자입니다.")));
         List<Mango> mangoList = mangoRepository.findAllByUser_Uid(user.getUid());
 
-        mangoList.stream()
-                .sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
-                .collect(Collectors.toList());
+        Collections.sort(mangoList, (m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()));
+
         return mangoList;
     }
 
@@ -168,9 +167,7 @@ public class DiseaseService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, "가입되지 않은 아이디입니다. 로그인을 진행합니다."));
         Long uid = user.getUid();
         mangoList = mangoRepository.findMangoByUidAndLocation(uid, location);
-        mangoList.stream()
-                .sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
-                .collect(Collectors.toList());
+        Collections.sort(mangoList, (m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()));
 
         return mangoList;
     }
