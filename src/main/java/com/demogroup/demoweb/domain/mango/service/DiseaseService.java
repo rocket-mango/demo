@@ -3,6 +3,7 @@ package com.demogroup.demoweb.domain.mango.service;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.demogroup.demoweb.domain.mango.dto.MangoDto;
 import com.demogroup.demoweb.global.config.S3Config;
 import com.demogroup.demoweb.domain.mango.domain.Disease;
 import com.demogroup.demoweb.domain.mango.domain.Mango;
@@ -24,6 +25,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -101,8 +103,8 @@ public class DiseaseService {
         return resultList;
     }
 
-    public Mango saveMango(MangoDTO dto) {
-        Mango mango = Mango.toEntity(dto);
+    public Mango saveMango(MangoDTO dto, User user) {
+        Mango mango = Mango.toEntity(dto,user);
         return mangoRepository.save(mango);
     }
 
@@ -110,6 +112,10 @@ public class DiseaseService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(()->(new AppException(ErrorCode.USERNAME_NOT_FOUND,"확인되지 않은 사용자입니다.")));
         List<Mango> mangoList = mangoRepository.findAllByUser_Uid(user.getUid());
+
+        mangoList.stream()
+                .sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
+                .collect(Collectors.toList());
         return mangoList;
     }
 
@@ -160,9 +166,11 @@ public class DiseaseService {
         List<Mango> mangoList=new ArrayList<>();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, "가입되지 않은 아이디입니다. 로그인을 진행합니다."));
-        System.out.println("UserService.modify");
         Long uid = user.getUid();
         mangoList = mangoRepository.findMangoByUidAndLocation(uid, location);
+        mangoList.stream()
+                .sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
+                .collect(Collectors.toList());
 
         return mangoList;
     }

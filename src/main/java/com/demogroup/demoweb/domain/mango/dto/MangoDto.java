@@ -1,5 +1,6 @@
 package com.demogroup.demoweb.domain.mango.dto;
 
+import com.demogroup.demoweb.domain.mango.domain.Disease;
 import com.demogroup.demoweb.domain.mango.domain.Mango;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class MangoDto {
     private String img_url;
     private String location;
     private boolean is_disease;
+
 
     public static MangoDto of(Mango e){
         return MangoDto.builder()

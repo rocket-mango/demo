@@ -1,4 +1,4 @@
-package com.demogroup.demoweb.dom;
+package com.demogroup.demoweb.dom.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

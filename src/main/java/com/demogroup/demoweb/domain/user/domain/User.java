@@ -39,7 +39,6 @@ public class User extends BaseTimeEntity {
 
     public static User toEntity(UserDTO dto, String encodePw){
         return User.builder()
-//                .uid(dto.getUid())
                 .name(dto.getName())
                 .nickname(dto.getNickname())
                 .username(dto.getUsername())

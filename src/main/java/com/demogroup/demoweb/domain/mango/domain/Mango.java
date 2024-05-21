@@ -1,6 +1,7 @@
 package com.demogroup.demoweb.domain.mango.domain;
 
 import com.demogroup.demoweb.dom.dto.MangoDTO;
+import com.demogroup.demoweb.domain.mango.dto.MangoDto;
 import com.demogroup.demoweb.domain.user.domain.User;
 import com.demogroup.demoweb.global.domain.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -39,9 +40,9 @@ public class Mango extends BaseTimeEntity {
     @Column(length = 50)
     private String location;
 
-    public static Mango toEntity(MangoDTO dto){
+    public static Mango toEntity(MangoDTO dto, User user){
         return Mango.builder()
-                .user(dto.getUser())
+                .user(user)
                 .is_disease(dto.is_disease())
                 .disease(dto.getDisease())
                 .img_url(dto.getImg_url())

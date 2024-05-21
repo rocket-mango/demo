@@ -1,5 +1,6 @@
-package com.demogroup.demoweb.dom.dto;
+package com.demogroup.demoweb.domain.tip.dto;
 
+import com.demogroup.demoweb.dom.dto.FarmingInfoDto;
 import com.demogroup.demoweb.domain.tip.domain.FarmingInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,6 @@ public class FarmingInfoSimplerResponseDTO {
     public static FarmingInfoSimplerResponseDTO of(String category, List<FarmingInfo> farmingInfoList){
 
         return FarmingInfoSimplerResponseDTO.builder()
-
                 .category(category)
                 .simpleFarmingInfoList(farmingInfoList.stream().map(FarmingInfoDto::of).collect(Collectors.toList()))
                 .build();

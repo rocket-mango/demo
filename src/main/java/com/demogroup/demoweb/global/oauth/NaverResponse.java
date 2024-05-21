@@ -1,4 +1,4 @@
-package com.demogroup.demoweb.dom.dto;
+package com.demogroup.demoweb.global.oauth;
 
 import com.demogroup.demoweb.global.oauth.OAuth2Response;
 

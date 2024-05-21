@@ -1,7 +1,6 @@
 package com.demogroup.demoweb.global.oauth;
 
 import com.demogroup.demoweb.domain.user.domain.User;
-import com.demogroup.demoweb.dom.dto.NaverResponse;
 import com.demogroup.demoweb.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
