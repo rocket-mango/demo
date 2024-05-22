@@ -22,6 +22,7 @@ public class HomePageResponseDto {
     private WeatherDto weather;
     private List<FarmingInfoDto> simpleFarmingInfoList;
 
+
     public static HomePageResponseDto of(List<Mango> mangolist, User user, WeatherDto weather, List<FarmingInfo> infoList){
         return HomePageResponseDto.builder()
                 .mangoList(mangolist.stream().map(MangoDto::of).collect(Collectors.toList()))
