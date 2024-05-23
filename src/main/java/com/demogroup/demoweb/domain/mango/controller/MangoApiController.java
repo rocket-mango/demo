@@ -46,8 +46,10 @@ public class MangoApiController {
         String diseaseName="";
         Disease disease=null;
 
+
         if(resultList.get(0).equals("Healthy")){
             is_disease=false;
+            disease=diseaseService.findDisease(resultList.get(0));
         }
         else {
             diseaseName=resultList.get(0);
