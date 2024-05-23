@@ -24,9 +24,8 @@ public class Mango extends BaseTimeEntity {
     private Long mid;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="uid")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(columnDefinition = "tinyint(1)")
