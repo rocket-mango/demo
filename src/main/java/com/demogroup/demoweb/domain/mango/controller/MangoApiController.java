@@ -31,7 +31,7 @@ public class MangoApiController {
     //리턴값 : top 3 결과와 망고 결과 정보를 리턴한다.
     @PostMapping(value = "/diagnosis", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<DiseaseResponseDto> mangoDiagnosis(//@AuthUser User user,
-                                                             @RequestPart(value = "mangoImage") MultipartFile mangoImage,
+                                                             @RequestPart(value = "mangoImage",required = false) MultipartFile mangoImage,
                                                              @RequestPart(value = "location") String location) throws Exception{
         //사용자 찾기
         //String username = user.getUsername();
