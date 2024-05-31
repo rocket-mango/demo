@@ -32,7 +32,7 @@ public class MangoApiController {
     @PostMapping(value = "/diagnosis", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<DiseaseResponseDto> mangoDiagnosis(//@AuthUser User user,
                                                              @RequestPart(value = "mangoImage",required = false) MultipartFile mangoImage,
-                                                             @RequestPart(value = "location") String location) throws Exception{
+                                                             @RequestPart(value = "location",required = false) String location) throws Exception{
         //사용자 찾기
         //String username = user.getUsername();
         User findUser = userService.findByUsername("yujin00");
