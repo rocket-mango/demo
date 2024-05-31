@@ -245,16 +245,21 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource configurationSource(){
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        // 특정 IP 주소들을 추가합니다.
-        config.addAllowedOrigin("*");
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin("https://localhost:3000");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("PATCH");
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.addAllowedMethod("OPTIONS");
+        corsConfiguration.addAllowedHeader("*");
+        // 헤더에 authorization항목이 있으므로 credential을 true로 설정합니다.
+        corsConfiguration.setAllowCredentials(true);
 
-        // 다른 CORS 설정 (옵션)
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
+        source.registerCorsConfiguration("/**",corsConfiguration);
 
-        source.registerCorsConfiguration("/**", config);
         return source;
     }
     /*
