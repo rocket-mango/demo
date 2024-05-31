@@ -99,7 +99,7 @@ public class SecurityConfig {
                         .disable()
                 ) // httpBasic 로그인 방식도 사용하지 않는다.
                 .authorizeHttpRequests(request->request
-                        .requestMatchers("/api/user/joinProc", "/api/user/login","/oauth2/**","/test","/test2").permitAll()
+                        .requestMatchers("/api/user/joinProc","/api/disease/diagnosis", "/api/user/login","/oauth2/**","/test","/test2").permitAll()
                         //.requestMatchers("/swagger-ui/**","/swagger-resources/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/**").hasRole("USER")
                         .anyRequest().authenticated()

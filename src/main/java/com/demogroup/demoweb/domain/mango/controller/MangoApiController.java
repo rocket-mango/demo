@@ -30,12 +30,12 @@ public class MangoApiController {
     //망고 질병 검색을 진행하는 컨트롤러
     //리턴값 : top 3 결과와 망고 결과 정보를 리턴한다.
     @PostMapping(value = "/diagnosis", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<DiseaseResponseDto> mangoDiagnosis(@AuthUser User user,
+    public ResponseEntity<DiseaseResponseDto> mangoDiagnosis(//@AuthUser User user,
                                                              @RequestPart(value = "mangoImage") MultipartFile mangoImage,
                                                              @RequestPart(value = "location") String location) throws Exception{
         //사용자 찾기
-        String username = user.getUsername();
-        User findUser = userService.findByUsername(username);
+        //String username = user.getUsername();
+        User findUser = userService.findByUsername("yujin00");
 
         //이미지를 s3에 저장하고, 망고 검사를 진행하는 페이지
         String s3Url = diseaseService.saveToS3(mangoImage);
