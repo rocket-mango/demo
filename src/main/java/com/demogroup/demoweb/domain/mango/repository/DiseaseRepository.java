@@ -11,4 +11,6 @@ public interface DiseaseRepository extends JpaRepository<Disease, Long> {
 
     Optional<Disease> findByName(String diseaseName);
 
+    Optional<Disease> findByEname(String diseaseName);
+
 }
