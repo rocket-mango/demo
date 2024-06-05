@@ -27,7 +27,7 @@ public class MangoApiController {
     private final DiseaseService diseaseService;
     private final UserService userService;
     Map<String,String> disease_nameEname=Map.of(
-            "Sooty mould","그을음병",
+            "Sooty Mould","그을음병",
             "Powdery Mildew","가루곰팡이",
             "Gall Midge","주머니나방붙이",
             "Die Back","일반 사멸",
