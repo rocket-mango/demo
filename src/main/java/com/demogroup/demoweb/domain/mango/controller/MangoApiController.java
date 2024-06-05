@@ -63,7 +63,7 @@ public class MangoApiController {
         Disease disease=null;
 
 
-        if(knameList.get(0).equals("Healthy")){
+        if(knameList.get(0).equals("정상")){
             is_disease=false;
             disease=diseaseService.findDisease(knameList.get(0));
         }
