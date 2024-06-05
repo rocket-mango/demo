@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 /*모든 엔티티에 공통으로 가져가야 하는
@@ -26,7 +28,7 @@ public abstract class BaseTimeEntity {
 
     @PrePersist
     public void onPrePersis(){
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp timestamp = toSeoulDate();
         this.createdDate= timestamp;
         this.modifiedDate=this.createdDate;
 
@@ -34,7 +36,15 @@ public abstract class BaseTimeEntity {
 
     @PreUpdate
     public void onPreUpdate(){
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp timestamp = toSeoulDate();
         this.modifiedDate=timestamp;
+    }
+
+    private Timestamp toSeoulDate(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime localDateTime = now.atZone(ZoneId.of("Asia/Seoul"))
+                .toLocalDateTime();
+        return Timestamp.valueOf(localDateTime);
+
     }
 }

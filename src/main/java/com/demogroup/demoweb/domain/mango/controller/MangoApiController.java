@@ -34,6 +34,9 @@ public class MangoApiController {
     public ResponseEntity<DiseaseResponseDto> mangoDiagnosis(//@AuthUser User user,
                                                              @RequestPart(value = "mangoImage",required = false) MultipartFile mangoImage,
                                                              @RequestPart(value = "location",required = false) String location) throws Exception{
+        if (location==null){
+            location="";
+        }
         //사용자 찾기
         //String username = user.getUsername();
         User findUser = userService.findByUsername("yujin00");
@@ -44,7 +47,7 @@ public class MangoApiController {
 
         //망고 결과 저장하기
         boolean is_disease=true;
-        String diseaseName="";
+        String diseaseName="건강";
         Disease disease=null;
 
 
@@ -55,6 +58,7 @@ public class MangoApiController {
         else {
             diseaseName=resultList.get(0);
             disease=diseaseService.findDisease(diseaseName);
+            diseaseName=disease.getName();
         }
         MangoDTO dto =new MangoDTO(findUser,is_disease,diseaseName, s3Url, location);
         Mango mango = diseaseService.saveMango(dto,findUser);
