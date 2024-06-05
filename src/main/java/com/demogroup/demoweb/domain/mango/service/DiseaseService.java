@@ -187,7 +187,7 @@ public class DiseaseService {
     }
 
     public Disease findDisease(String diseaseName) {
-        Disease disease = diseaseRepository.findByEname(diseaseName)
+        Disease disease = diseaseRepository.findByName(diseaseName)
                 .orElseThrow(()->new AppException(ErrorCode.DISEASE_NOT_FOUND,"질병을 찾지 못했습니다. ORM 또는 DB에 오류가 발생했을 가능성이 있습니다."));
         return disease;
     }
