@@ -10,6 +10,7 @@ import com.demogroup.demoweb.domain.user.domain.User;
 import com.demogroup.demoweb.dom.dto.MangoDTO;
 import com.demogroup.demoweb.domain.mango.service.DiseaseService;
 import com.demogroup.demoweb.domain.user.service.UserService;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -94,7 +95,7 @@ public class MangoApiController {
     }
 
     //망고 리스트에서 해당 망고 객체를 삭제한다.
-    @GetMapping("/lists/delete/{mid}")
+    @DeleteMapping("/lists/delete/{mid}")
     public ResponseEntity listDelete(@PathVariable("mid") Long mid){
 
         try{
