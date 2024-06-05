@@ -181,13 +181,13 @@ public class DiseaseService {
 
     @Transactional(readOnly = true)
     public Disease findByDiseaseName(String name){
-        Disease disease = diseaseRepository.findByEname(name)
+        Disease disease = diseaseRepository.findByName(name)
                 .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_FOUND, "질병을 찾지 못했습니다. id에 오류가 있을 가능성이 있습니다."));
         return disease;
     }
 
     public Disease findDisease(String diseaseName) {
-        Disease disease = diseaseRepository.findByEname(diseaseName)
+        Disease disease = diseaseRepository.findByName(diseaseName)
                 .orElseThrow(()->new AppException(ErrorCode.DISEASE_NOT_FOUND,"질병을 찾지 못했습니다. ORM 또는 DB에 오류가 발생했을 가능성이 있습니다."));
         return disease;
     }
