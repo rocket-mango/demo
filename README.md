@@ -1,171 +1,50 @@
 # 🥭 망하지망고
 이화여자대학교 컴퓨터공학과 캡스톤디자인 과목에서 개발한 어플 '망하지망고' 입니다. Spring Boot와 React Native를 활용하여 망고 잎 사진으로 망고 질병을 식별하는 안드로이드 어플리케이션을 구현하였습니다.
 
-## 백엔드 API
+
+# 동작 환경
++ AWS EC2 : Ubuntu 22.04 LTS AWS EC2
++ 프레임워크 : Spring Boot v3.1.4
++ 데이터베이스 : MySQL 8.0.33
+
+## 백엔드 배포 API
 '''
 https://api.capston-test-mm.p-e.kr
 '''
+배포 서버 URL입니다. 아래 서버주소로 테스트하실 수 있습니다.
+
+```
+http://localhost:8080
+```
 
 
 ---
 
 
-# 🧑‍🏫프로젝트 소개
+# 로컬에서 서버 실행하고 테스트하는 방법
 
-### 프로젝트 제목
-망하지망고
-### 내용
-망고 초보 재배자를 위해 이미지 객체 검출 및 분류 인공지능 모델을 기반으로 망고 잎 사진을 통해 망고 질병을 식별하고 재배 기초 정보들을 제공하는 모바일 어플리케이션 서비스입니다.
-### 개발기간
-2023.9 ~ 2024.6
-### 팀원 소개
-11팀 로켓단
+### Requirements
++ AWS EC2 : Ubuntu 22.04 LTS AWS EC2
++ 프레임워크 : Spring Boot v3.1.4
++ 데이터베이스 : MySQL 8.0.33
++ Redis 3.0.504
++ intelliJ 설치 필수!
 
-FrontEnd
->  💚 박서연  🧡 최윤지
-
-BackEnd
->  💙 정유진 💛 조하은
+### Install
+로컬에서(테스트용, 배포x) 테스트
 
 
-### 사용한 기술
-
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
-![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
-![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
-
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
-
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
-
-![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
-![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
-![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white)
-
-
----
-
-
-# 🏗 아키텍처 
-
-![서비스 구조도 수정 (2) 1](https://github.com/rocket-mango/mango_BE/assets/104640725/a2e17e30-0fff-4078-b06b-0c36c8b64fbf)
-
-
----
-
-
-# 🌹 주요 기능
-1. 망고질병진단기능
-![Frame 26085692](https://github.com/rocket-mango/mango_BE/assets/104640725/cf4b0c25-fa07-4f9c-a92a-3f2f99e3677c)
-
-YOLOv8 및 ResNet50 인공지능 모델을 토대로 망고 잎 질병 분류가 가능한 커스텀 모델을 통해, 망고 잎 사진을 업로드하여 망고 질병 진단 및 증상, 원인, 해결 방법 등 결과를 확인할 수 있는 기능입니다.
-
-3. 망고 팁 기능
-![Frame 26085692 (1)](https://github.com/rocket-mango/mango_BE/assets/104640725/997adebb-024c-44b1-bc9b-e94c8e1dc62f)
-
-재배, 품종, 성장, 질병관리 4가지 테마의 망고 재배와 관련된 정보를 제공하는 기능입니다.
-
-5. 위치별 날씨 기능
-![Frame 26085692 (2)](https://github.com/rocket-mango/mango_BE/assets/104640725/57e6cab5-7b57-41ee-95e7-5a91c721802f)
-
-사용자 휴대폰 위도와 경도를 파악하여 위치기반 날씨, 기온 정보를 제공하는 기능입니다. 
-
-
----
-
-
-# 🗺 시작 가이드
-
-  1) GIT CLONE 후 BUILD
-
+1. 저장소 클론
+   
 ```
 git clone https://github.com/rocket-mango/mango_BE.git
 ```
-을 실행하고, intelliJ에서 build.gradle을 클릭하여 프로젝트를 실행합니다.
 
-  2) application.yml 작성
+2. MySQL 데이터베이스를 설치하고 'mangodb' 데이터베이스 스키마를 생성합니다.
 
-다음과 같이 yml을 작성합니다. naver 로그인과 aws s3, rds secret 등을 설정한 후 작성합니다. 
-local pc에서는 프로젝트의 /resource 파일 내 'application.yml' 파일을 생성하여 해당 내용을 붙여넣기합니다.
+![image](https://github.com/rocket-mango/mango_BE/assets/104640725/ad5f175e-8acf-4676-b0e5-621381dca476)
 
-배포할 경우, application yml을 작성한 후 github actions의 secret 에 'application.yml' 제목으로 입력합니다.
-
-```
-spring:
-  servlet:
-    multipart:
-      maxFileSize: 10MB # 파일 하나의 최대 크기
-      maxRequestSize: 30MB  # 한 번에 최대 업로드 가능 용량
-  devtools:
-    restart:
-      enabled: true
-  datasource:
-    driver-classname: com.mysql.cj.jdbc.Driver
-    url: jdbc: [AWS RDS 엔드포인트와 DB 이름을 넣으세요]?createDatabaseIfNotExist=true&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=Asia/Seoul&useSSL=false 
-    username: [설정한 DB username]
-    password: [설정한 DB password]
-  jwt:
-    secret: [JWT SECRET]
-  jpa:
-    hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
-    generate-ddl: true
-  security:
-    oauth2:
-      client:
-        registration:
-          naver:
-            client-name: naver
-            client-id: [client id]
-            client-secret: [client secret]
-            redirect-uri: [설정한 redirect url]
-            authorization-grant-type: authorization_code
-            scope: [가져올 필드]
-        provider:
-          naver:
-            authorization-uri: [naver authorization url]
-            token-uri: [token url]
-            user-info-uri: https://openapi.naver.com/v1/nid/me
-            user-name-attribute: response
-  redis:
-    host: redis-container
-    port: 6379
-
-cloud:
-  aws:
-    s3:
-      bucket: mango-s3-1
-    stack:
-      auto: false
-    region:
-      static: ap-northeast-2
-    credentials:
-      access-key: [iam access key]
-      secret-key: [iam secret key]
-
-imgTmpsave:
-  location: /home
-
-mlserver:
-  ip: http://43.134.38.62:8083
-
- ``` 
-
-  3) DB 에 dml 실행행
-
-FarmingInfoCategory, FarmingInfo, Disease의 내용을 db에 저장합니다.
+이후 FarmingInfoCategory, FarmingInfo, Disease의 내용을 db에 저장합니다.
 
 + FarmingInfocategory 쿼리
 
@@ -420,8 +299,88 @@ values (
 
 ```
 
-4) 회원가입
-/api/user/joinProc api로
+
+3. 로컬 pc에 redis를 설치합니다.
+<https://github.com/microsoftarchive/redis/releases> 주소에서
+Redis-x64-3.0.504.msi 를 다운받은 후 설치합니다.
+
+5. 프로젝트의 /src/main/resources경로에 application.yml 파일을 생성/작성합니다.
+
+```
+spring:
+  servlet:
+    multipart:
+      maxFileSize: 10MB # 파일 하나의 최대 크기
+      maxRequestSize: 30MB  # 한 번에 최대 업로드 가능 용량
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    driver-classname: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mangodb?createDatabaseIfNotExist=true&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: [dbpassword]
+  jwt:
+    secret: alskdjfijopwijlakjsdfhiuawhkljnvuuuewkjhsssssssssssssssvvvvv
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    generate-ddl: true
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            client-name: naver
+            client-id: rWaf9unmPhRwh9b9zFOE
+            client-secret: qJ25r0Gz8s
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            authorization-grant-type: authorization_code
+            scope: name,email
+        provider:
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
+
+  redis:
+    host: localhost
+    port: 6379
+
+# AWS S3
+cloud:
+  aws:
+    s3:
+      bucket: mango-s3-1
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: [aws access key]
+      secret-key: [aws secret key]
+test: this is test
+
+#이미지
+imgTmpsave:
+  location: C:\\Users\\user\\Downloads\\tmp
+
+#ml public ip
+mlserver:
+  ip: http://43.134.38.62:8083
+
+ ```
+
+4. 어플리케이션을 실행합니다.
+![image](https://github.com/rocket-mango/mango_BE/assets/104640725/d2575c64-0b26-4623-ae99-8fbb261215c3)
+
+5. 회원가입 진행
+
+/api/user/joinProc api 경로로 회원가입을 진행합니다.
 
 ```
 {
@@ -433,7 +392,99 @@ values (
 }
 ```
 
-으로 회원가입을 진행한 후, POSTMAN으로 API를 수행합니다.
+6. postman에서 테스트합니다.
+
+1) 로그인 후 header의 authorization에서 JWT를 복사합니다.
+![image](https://github.com/rocket-mango/mango_BE/assets/104640725/4d2acc25-fbdf-45eb-bbed-600452dec2a3)
+
+2) 이후 다른 api를 테스트할 때, header의 authorization에 복사한 jwt를 붙여넣고 테스트합니다.
+/home 을 테스트합니다.
+
+![image](https://github.com/rocket-mango/mango_BE/assets/104640725/fca9f963-2263-471c-ba7d-0fd8b309a33a)
+
+다음과 같이 입력한 후 오른쪽 상단의 'Send' 버튼을 클릭합니다.
+
+![image](https://github.com/rocket-mango/mango_BE/assets/104640725/a7d7f8fe-6e63-4fd0-9883-71bfdd6c79fb)
+
+다음과 같은 결과를 받을 수 있습니다.
+
+
+---
+---
+
+
+
+# 🧑‍🏫프로젝트 소개
+
+### 프로젝트 제목
+망하지망고
+### 내용
+망고 초보 재배자를 위해 이미지 객체 검출 및 분류 인공지능 모델을 기반으로 망고 잎 사진을 통해 망고 질병을 식별하고 재배 기초 정보들을 제공하는 모바일 어플리케이션 서비스입니다.
+### 개발기간
+2023.9 ~ 2024.6
+### 팀원 소개
+11팀 로켓단
+
+FrontEnd
+>  💚 박서연  🧡 최윤지
+
+BackEnd
+>  💙 정유진 💛 조하은
+
+
+### 사용한 기술
+
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
+
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+
+![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
+![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
+![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white)
+
+
+---
+
+
+# 🏗 아키텍처 
+
+![서비스 구조도 수정 (2) 1](https://github.com/rocket-mango/mango_BE/assets/104640725/a2e17e30-0fff-4078-b06b-0c36c8b64fbf)
+
+
+---
+
+
+# 🌹 주요 기능
+1. 망고질병진단기능
+![Frame 26085692](https://github.com/rocket-mango/mango_BE/assets/104640725/cf4b0c25-fa07-4f9c-a92a-3f2f99e3677c)
+
+YOLOv8 및 ResNet50 인공지능 모델을 토대로 망고 잎 질병 분류가 가능한 커스텀 모델을 통해, 망고 잎 사진을 업로드하여 망고 질병 진단 및 증상, 원인, 해결 방법 등 결과를 확인할 수 있는 기능입니다.
+
+3. 망고 팁 기능
+![Frame 26085692 (1)](https://github.com/rocket-mango/mango_BE/assets/104640725/997adebb-024c-44b1-bc9b-e94c8e1dc62f)
+
+재배, 품종, 성장, 질병관리 4가지 테마의 망고 재배와 관련된 정보를 제공하는 기능입니다.
+
+5. 위치별 날씨 기능
+![Frame 26085692 (2)](https://github.com/rocket-mango/mango_BE/assets/104640725/57e6cab5-7b57-41ee-95e7-5a91c721802f)
+
+사용자 휴대폰 위도와 경도를 파악하여 위치기반 날씨, 기온 정보를 제공하는 기능입니다. 
+
+
+---
 
 
 # 사용한 OPEN SOURCE
