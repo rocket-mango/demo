@@ -79,16 +79,20 @@ YOLOv8 및 ResNet50 인공지능 모델을 토대로 망고 잎 질병 분류가
 
 
 # 🗺 시작 가이드
-   - 설치 및 실행
-  1) GIT CLONE 해서 BUILD하는 방법
 
+  1) GIT CLONE 후 BUILD
 
+```
+git clone https://github.com/rocket-mango/mango_BE.git
+```
+을 실행하고, intelliJ에서 build.gradle을 클릭하여 프로젝트를 실행합니다.
 
+  2) application.yml 작성
 
+다음과 같이 yml을 작성합니다. naver 로그인과 aws s3, rds secret 등을 설정한 후 작성합니다. 
+local pc에서는 프로젝트의 /resource 파일 내 'application.yml' 파일을 생성하여 해당 내용을 붙여넣기합니다.
 
-  3) application.yml 작성법
-
-다음과 같이 yml을 작성합니다. naver 로그인과 aws s3, rds secret 등을 설정한 후 작성합니다. application yml을 작성한 후 github actions의 secret 에 'application.yml' 제목으로 입력합니다.
+배포할 경우, application yml을 작성한 후 github actions의 secret 에 'application.yml' 제목으로 입력합니다.
 
 ```
 spring:
@@ -154,12 +158,14 @@ mlserver:
 
  ``` 
 
-  4) DB 파일, DB 연결 방법
+  3) DB 에 dml 실행행
 
-+ farmingInfocategory 쿼리
+FarmingInfoCategory, FarmingInfo, Disease의 내용을 db에 저장합니다.
+
++ FarmingInfocategory 쿼리
 
 ```
-INSERT INTO farmingInfoCategory (category_name)
+INSERT INTO FarmingInfoCategory (category_name)
 VALUES 
 ('망고 상세 Tip'),
 ('망고 성장 Tip'),
@@ -409,11 +415,27 @@ values (
 
 ```
 
-  5) 사용한 OPEN SOURCE 작성하기
-+ [망고 잎 데이터셋](https://www.kaggle.com/datasets/aryashah2k/mango-leaf-disease-dataset)
-+ 
+4) 회원가입
+/api/user/joinProc api로
 
-  7) API 설명
+```
+{
+  "name": "김망고",
+  "nickname": "mangomango",
+  "username": "yujin00",
+  "password": "yujin0926$",
+  "email": "mangorocket@ewhain.net"
+}
+```
+
+으로 회원가입을 진행한 후, POSTMAN으로 API를 수행합니다.
+
+
+# 사용한 OPEN SOURCE
++ [망고 잎 데이터셋](https://www.kaggle.com/datasets/aryashah2k/mango-leaf-disease-dataset)
+
+ 
+# API 설명
  
 #### 사용자
  
