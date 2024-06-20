@@ -81,10 +81,82 @@ YOLOv8 및 ResNet50 인공지능 모델을 토대로 망고 잎 질병 분류가
 # 🗺 시작 가이드
    - 설치 및 실행
   1) GIT CLONE 해서 BUILD하는 방법
-  2) application.yml 작성법
-  3) DB 파일, DB 연결 방법
-+ farmingInfocategory 쿼리
 
+
+
+
+
+  3) application.yml 작성법
+
+다음과 같이 yml을 작성합니다. naver 로그인과 aws s3, rds secret 등을 설정한 후 작성합니다. application yml을 작성한 후 github actions의 secret 에 'application.yml' 제목으로 입력합니다.
+
+```
+spring:
+  servlet:
+    multipart:
+      maxFileSize: 10MB # 파일 하나의 최대 크기
+      maxRequestSize: 30MB  # 한 번에 최대 업로드 가능 용량
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    driver-classname: com.mysql.cj.jdbc.Driver
+    url: jdbc: [AWS RDS 엔드포인트와 DB 이름을 넣으세요]?createDatabaseIfNotExist=true&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=Asia/Seoul&useSSL=false 
+    username: [설정한 DB username]
+    password: [설정한 DB password]
+  jwt:
+    secret: [JWT SECRET]
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    generate-ddl: true
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            client-name: naver
+            client-id: [client id]
+            client-secret: [client secret]
+            redirect-uri: [설정한 redirect url]
+            authorization-grant-type: authorization_code
+            scope: [가져올 필드]
+        provider:
+          naver:
+            authorization-uri: [naver authorization url]
+            token-uri: [token url]
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
+  redis:
+    host: redis-container
+    port: 6379
+
+cloud:
+  aws:
+    s3:
+      bucket: mango-s3-1
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: [iam access key]
+      secret-key: [iam secret key]
+
+imgTmpsave:
+  location: /home
+
+mlserver:
+  ip: http://43.134.38.62:8083
+
+ ``` 
+
+  4) DB 파일, DB 연결 방법
+
++ farmingInfocategory 쿼리
 
 ```
 INSERT INTO farmingInfoCategory (category_name)
@@ -339,8 +411,89 @@ values (
 
   5) 사용한 OPEN SOURCE 작성하기
 + [망고 잎 데이터셋](https://www.kaggle.com/datasets/aryashah2k/mango-leaf-disease-dataset)
-   
++ 
+
   7) API 설명
+ 
+#### 사용자
+ 
++ /api/home
+- GET
+- 입력 : 없음
+- 내용 : 홈 화면에 띄울 정보를 보냄
+- 출력 : 기상청 정보, 사용자의 마이망고리스트, 사용자 nickname
 
++ /api/user/joinProc
+- POST
+- 입력 : name, username, nickname, password, email
+- 내용 : 사용자 회원가입
+- 출력 : 사용자가 입력한 사용자 정보(name, username, nickname, password, email)
 
++ /api/user/resignation
+- DELETE
+- 입력 : 없음
+- 내용 : 사용자 회원 탈퇴
+- 출력 : 탈퇴한 사용자 닉네임(nickname)
+
++ /api/user/login
+- POST
+- 입력 : username, password
+- 내용 : 사용자 로그인
+- 출력 : Header의 authorization에 JWT
+
++ /api/user/logout
+- GET / POST 
+- 입력 : 없음
+- 내용 : 사용자 로그아웃
+- 출력 : 없음
+
++ /api/user/information
+- GET
+- 입력 : 없음
+- 내용 : 사용자 정보를 필요로 할 때
+- 출력 : 사용자 정보(name, username, nickname, email)
+
++ /api/user/modify
+- PATCH
+- 입력 : name, username, nickname, email
+- 내용 : 사용자 정보 수정
+- 출력 : 사용자가 수정한 사용자 정보(name, username, nickname, password, email)
+
+#### 질병 검사
+
++ /api/disease/diagnosis
+- POST
+- 입력 : 망고 사진, location
+- 내용 : 망고 검사 진행
+- 출력 : top3 결과 리스트, 망고 결과 리턴
+
++ /api/disease/my-mango-list
+- GET
+- 입력 : 없음
+- 내용 : 해당 사용자의 망고 검사 결과 리스트를 반환
+- 출력 : 망고 결과 리스트
+
++ /api/disease/lists?location={location}
+- GET
+- 입력 : location
+- 내용 : 사용자의 location에 해당하는 망고 결과 리스트만 리턴
+- 출력 : 해당 location의 망고 결과 리스트
+
++ /api/disease/{mid}
+- GET
+- 입력 : mid
+- 내용 : 망고 검사 정보
+- 출력 : 망고 검사 정보
+
++ /api/disease/lists/delete/{mid}
+- DELETE
+- 입력 : pathVariable mid(망고 객체 id)
+- 내용 : 해당 mid를 가진 망고 삭제
+- 출력 : "successful delete mango" 문자열
+
++ /api/farmingInfo/{fid}
+- GET
+- 입력: fid
+- 내용 : 망고 팁 내용
+- 출력 : 망고 팁
 
