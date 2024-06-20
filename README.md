@@ -3,7 +3,7 @@
 
 
 # 동작 환경
-+ AWS EC2 : Ubuntu 22.04 LTS AWS EC2
++ AWS EC2 : Ubuntu 22.04 LTS 
 + 프레임워크 : Spring Boot v3.1.4
 + 데이터베이스 : MySQL 8.0.33
 
